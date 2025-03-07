@@ -8,7 +8,8 @@ st.title('E-Commerce Dashboard :sparkles:')
  
 with st.sidebar:
     
-    st.image('logo.jpg', width=150)
+    img_url = "https://github.com/antony-ch/assets-e-commerce-dashboard/blob/main/logo.jpg?raw=true"
+    st.image(img_url, width=150)
     st.write("### E-Commerce")
 
     start_date = datetime.today() - timedelta(days=30)
