@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+import os
 
 st.title('E-Commerce Dashboard :sparkles:')
  
@@ -22,7 +23,7 @@ with st.sidebar:
         max_value=datetime.today()
     )
 
-csv_url = "https://raw.githubusercontent.com/antony-ch/assets-e-commerce-dashboard/main/all_data.csv"
+file_path = os.path.join(os.path.dirname(__file__), "all_data.csv")
 df = pd.read_csv("all_data.csv")
 
 if "customer_city" in df.columns:
