@@ -24,7 +24,7 @@ with st.sidebar:
     )
 
 file_path = os.path.join(os.path.dirname(__file__), "all_data.csv")
-df = pd.read_csv("all_data.csv")
+df = pd.read_csv(file_path)
 
 if "customer_city" in df.columns:
 
