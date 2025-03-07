@@ -44,9 +44,7 @@ if "customer_city" in df.columns:
     st.pyplot(fig)
 else:
     st.write("Kolom 'customer_city' tidak ditemukan dalam dataset.")
-
-
-df = pd.read_csv("all_data.csv")
+ 
 
 if "product_category_name" in df.columns:
   
@@ -68,8 +66,6 @@ if "product_category_name" in df.columns:
 else:
     st.write("Kolom 'product_category_name' tidak ditemukan dalam dataset.")
 
-
-df = pd.read_csv("all_data.csv")
 
 if "product_category_name_english" in df.columns and "price" in df.columns:
 
@@ -96,8 +92,6 @@ if "product_category_name_english" in df.columns and "price" in df.columns:
 else:
     st.write("Kolom 'product_category_name_english' atau 'price' tidak ditemukan dalam dataset.")
 
-
-df = pd.read_csv("all_data.csv")
 
 if "payment_type" in df.columns:
 
