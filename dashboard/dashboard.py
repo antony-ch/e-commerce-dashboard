@@ -6,28 +6,32 @@ import seaborn as sns
 import os
 
 st.title('E-Commerce Dashboard :sparkles:')
- 
+
 with st.sidebar:
-    
     img_url = "https://github.com/antony-ch/assets-e-commerce-dashboard/blob/main/logo.jpg?raw=true"
     st.image(img_url, width=150)
     st.write("### E-Commerce")
 
-    start_date = datetime.today() - timedelta(days=30)
-    end_date = datetime.today()
+    start_date = datetime(2018, 1, 1)
+    end_date = datetime(2019, 12, 31)
 
     date_range = st.date_input(
-        "Pilih rentang waktu",
-        value=(start_date, end_date),
-        min_value=datetime(2020, 1, 1),
-        max_value=datetime.today()
-    )
+    "Pilih rentang waktu",
+    value=(start_date, end_date),
+    min_value=datetime(2014, 1, 1),
+    max_value=datetime(2019, 12, 31)
+)
 
 file_path = os.path.join(os.path.dirname(__file__), "all_data.csv")
 df = pd.read_csv(file_path)
 
-if "customer_city" in df.columns:
+if "order_purchase_timestamp" in df.columns:
+    df["order_purchase_timestamp"] = pd.to_datetime(df["order_purchase_timestamp"])
 
+    df = df[(df["order_purchase_timestamp"].dt.date >= date_range[0]) & 
+            (df["order_purchase_timestamp"].dt.date <= date_range[1])]
+
+if "customer_city" in df.columns:
     city_distribution = df["customer_city"].value_counts().reset_index()
     city_distribution.columns = ["customer_city", "customer_count"]
 
@@ -42,16 +46,11 @@ if "customer_city" in df.columns:
     ax.set_title("Top 10 Kota dengan Jumlah Pelanggan Terbanyak")
 
     st.pyplot(fig)
-else:
-    st.write("Kolom 'customer_city' tidak ditemukan dalam dataset.")
- 
 
 if "product_category_name" in df.columns:
-  
     category_orders = df["product_category_name"].value_counts().reset_index()
     category_orders.columns = ["product_category_name", "order_count"]
 
-   
     top_10_orders = category_orders.head(10)
 
     st.subheader("📊 Top 10 Kategori Produk Berdasarkan Jumlah Pesanan")
@@ -63,19 +62,14 @@ if "product_category_name" in df.columns:
     ax.set_title("Top 10 Kategori Produk Berdasarkan Jumlah Pesanan")
 
     st.pyplot(fig)
-else:
-    st.write("Kolom 'product_category_name' tidak ditemukan dalam dataset.")
-
 
 if "product_category_name_english" in df.columns and "price" in df.columns:
-
     category_revenue = df.groupby("product_category_name_english")["price"].sum().reset_index()
-
     category_revenue = category_revenue.sort_values(by="price", ascending=False)
 
     top_5_revenue = category_revenue.head(5)
 
-    st.subheader("📊 Top 5 Kategori Produk Berdasarkan Jumlah Pendapatan")
+    st.subheader("📊 Top 5 Kategori Produk Berdasarkan Pendapatan")
 
     fig, ax = plt.subplots(figsize=(10, 6))
     ax.pie(
@@ -85,16 +79,12 @@ if "product_category_name_english" in df.columns and "price" in df.columns:
         startangle=140,
         colors=plt.cm.Paired.colors
     )
-    ax.set_title("Top 5 Kategori Produk Berdasarkan Jumlah Pendapatan")
+    ax.set_title("Top 5 Kategori Produk Berdasarkan Pendapatan")
     ax.axis("equal")
 
     st.pyplot(fig)
-else:
-    st.write("Kolom 'product_category_name_english' atau 'price' tidak ditemukan dalam dataset.")
-
 
 if "payment_type" in df.columns:
-
     payment_counts = df["payment_type"].value_counts().reset_index()
     payment_counts.columns = ["payment_type", "count"]
 
@@ -110,5 +100,3 @@ if "payment_type" in df.columns:
     ax.set_title("Top 5 Metode Pembayaran yang Paling Sering Digunakan")
 
     st.pyplot(fig)
-else:
-    st.write("Kolom 'payment_type' tidak ditemukan dalam dataset.")
